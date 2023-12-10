@@ -2,6 +2,7 @@ package com.example.trabago.controller;
 
 import com.example.trabago.model.JobColumn;
 
+import com.example.trabago.model.JobColumnDTO;
 import com.example.trabago.service.JobColumnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,13 +20,14 @@ public class JobColumnController {
     private JobColumnService jobColumnService;
 
     @PostMapping
-    public ResponseEntity<?> createJobColumn(@RequestBody JobColumn jobColumn) {
+    public ResponseEntity<JobColumn> createJobColumnFromModal(@RequestBody JobColumnDTO jobColumn) {
         try {
-            JobColumn jobColumn1 = new JobColumn(jobColumn.getName(), jobColumn.getOrder(),jobColumn.getColor());
+            int order = jobColumnService.getAllColumns().size() + 1;
+            JobColumn jobColumn1 = new JobColumn(jobColumn.getName(), order, jobColumn.getColor());
             jobColumnService.saveColumn(jobColumn1);
             return new ResponseEntity<>(jobColumn1, HttpStatus.OK);
         } catch (Exception ex) {
-            return new ResponseEntity<>("An error occurred during save: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
