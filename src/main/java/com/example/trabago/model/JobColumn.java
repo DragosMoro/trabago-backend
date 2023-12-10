@@ -1,6 +1,7 @@
 package com.example.trabago.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -16,7 +17,8 @@ public class JobColumn {
     @GeneratedValue(generator = "uuid-hibernate-generator")
     @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
-    @Column(name = "name")
+
+    @Column(name = "name", unique = true)
     private String name;
 
 
@@ -74,6 +76,7 @@ public class JobColumn {
     public void setName(String name) {
         this.name = name;
     }
+
 
     public List<Job> getJobs() {
         return jobs;

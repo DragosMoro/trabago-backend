@@ -8,4 +8,5 @@ import java.util.UUID;
 
 public interface JobColumnRepository extends JpaRepository<JobColumn, UUID> {
 
+    JobColumn findByName(String name);
 }

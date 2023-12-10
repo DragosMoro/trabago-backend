@@ -1,9 +1,11 @@
 package com.example.trabago.service;
 
 import com.example.trabago.model.Job;
+import com.example.trabago.model.JobDTO;
 import com.example.trabago.repository.JobRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,8 +19,7 @@ public class JobService {
     }
 
     public void saveJob(Job job) {
-        //vreau sa gasesti toate joburile cu acelasi columnId si sa le numeri si sa adaugi +1 la order
-        
+
         jobRepository.save(job);
     }
 
@@ -38,10 +39,10 @@ public class JobService {
         return jobRepository.findAll();
     }
 
+
     public List<Job> getJobsByColumnId(UUID id) {
         return jobRepository.findByJobColumnId(id);
     }
-
 
 
 }

@@ -1,5 +1,7 @@
 package com.example.trabago.model;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -31,13 +33,27 @@ public class Job {
     @Column(name = "column_order")
     private Integer order;
 
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
-    @Column(name="image_url")
+    @Column(name = "image_url")
     private String imageUrl;
+
+    @Column(name = "salary")
+    private String salary;
+
+    @Column(name = "job_type")
+    private String jobType;
+
+    @Column(name = "job_url")
+    private String jobUrl;
+
+    @Column(name = "work_mode")
+    private String workMode;
+
+
     @ManyToOne
-    @JoinColumn(name = "job_column_id", referencedColumnName = "id", nullable=false)
+    @JoinColumn(name = "job_column_id", referencedColumnName = "id", nullable = false)
     private JobColumn jobColumn;
 
     public String getCompany() {
@@ -112,6 +128,7 @@ public class Job {
         this.imageUrl = imageUrl;
     }
 
+
     public JobColumn getJobColumn() {
         return jobColumn;
     }
@@ -123,20 +140,56 @@ public class Job {
     public Job() {
     }
 
-    public Job(String company, String position, String location, String date, Integer order, String description, String imageUrl, JobColumn jobColumn) {
+    public Job(String company, String position, String location, String date, Integer order, String description, String imageUrl, String salary, String jobType, String jobUrl, String workMode, JobColumn jobColumn) {
         this.company = company;
         this.position = position;
         this.location = location;
         this.date = date;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
         this.order = order;
         this.description = description;
         this.imageUrl = imageUrl;
+        this.salary = salary;
+        this.jobType = jobType;
+        this.jobUrl = jobUrl;
+        this.workMode = workMode;
         this.jobColumn = jobColumn;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public UUID getId() {
         return id;
+    }
+
+    public String getSalary() {
+        return salary;
+    }
+
+    public void setSalary(String salary) {
+        this.salary = salary;
+    }
+
+    public String getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(String jobType) {
+        this.jobType = jobType;
+    }
+
+    public String getJobUrl() {
+        return jobUrl;
+    }
+
+    public void setJobUrl(String jobUrl) {
+        this.jobUrl = jobUrl;
+    }
+
+    public String getWorkMode() {
+        return workMode;
+    }
+
+    public void setWorkMode(String workMode) {
+        this.workMode = workMode;
     }
 }
