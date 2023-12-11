@@ -35,7 +35,7 @@ public class JobColumn {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "jobColumn")
+    @OneToMany(mappedBy = "jobColumn", cascade = CascadeType.REMOVE)
     private List<Job> jobs;
 
     public JobColumn() {
