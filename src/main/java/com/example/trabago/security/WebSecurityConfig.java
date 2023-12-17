@@ -43,9 +43,9 @@ public class WebSecurityConfig {
         return http
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
 
-                        .requestMatchers("/api/jobs", "/api/jobs/**").permitAll()
-                        .requestMatchers("/api/jobColumn", "/api/jobColumn/**").permitAll()
-                        .requestMatchers("/public/**", "/auth/**", "/oauth2/**").permitAll()
+//                        .requestMatchers("/api/jobs", "/api/jobs/**").hasAnyAuthority(ADMIN, USER)
+//                        .requestMatchers("/api/jobColumn", "/api/jobColumn/**, /boards").hasAnyAuthority(ADMIN, USER)
+                        .requestMatchers("**").permitAll()
                         .requestMatchers("/", "/error", "/csrf").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth2Login -> oauth2Login

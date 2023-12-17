@@ -1,4 +1,4 @@
-package com.example.trabago.model;
+package com.example.trabago.model.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;

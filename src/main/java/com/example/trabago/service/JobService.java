@@ -1,11 +1,9 @@
 package com.example.trabago.service;
 
 import com.example.trabago.model.Job;
-import com.example.trabago.model.JobDTO;
 import com.example.trabago.repository.JobRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

@@ -1,5 +1,6 @@
 package com.example.trabago.service;
 
+import com.example.trabago.exception.UserNotFoundException;
 import com.example.trabago.model.User;
 import com.example.trabago.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean hasUserWithEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public User validateAndGetUserByEmail(String email) {
+        return getUserByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(String.format("User with email %s not found", email)));
     }
 
     @Override

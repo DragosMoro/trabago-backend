@@ -2,9 +2,7 @@ package com.example.trabago.controller;
 
 import com.example.trabago.model.Job;
 import com.example.trabago.model.JobColumn;
-import com.example.trabago.model.JobDTO;
-import com.example.trabago.model.Test;
-import com.example.trabago.repository.JobRepository;
+import com.example.trabago.model.dtos.JobDTO;
 import com.example.trabago.service.JobColumnService;
 import com.example.trabago.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
