@@ -1,7 +1,6 @@
 package com.example.trabago.security.oauth2;
 
 import com.example.trabago.security.CustomUserDetails;
-
 import com.example.trabago.security.WebSecurityConfig;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -15,17 +14,14 @@ public class GitHubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
 
     @Override
     public CustomUserDetails extractUserInfo(OAuth2User oAuth2User) {
-        //spilt the name into first and last name
-        String name = retrieveAttr("name", oAuth2User);
-        String[] nameSplit = name.split(" ");
-        String firstName = nameSplit[0];
-        String lastName = nameSplit[1];
-
         CustomUserDetails customUserDetails = new CustomUserDetails();
-        customUserDetails.setFirstName(firstName);
-        customUserDetails.setLastName(lastName);
-        customUserDetails.setEmail(retrieveAttr("email", oAuth2User));
-        customUserDetails.setAvatarUrl(retrieveAttr("avatar_url", oAuth2User));
+        oAuth2User.getAttributes().forEach((k, v) -> System.out.println(k + " " + v));
+        oAuth2User.getName();
+
+        customUserDetails.setFirstName(getAttributeValue("login", oAuth2User));
+        customUserDetails.setLastName(getAttributeValue("name", oAuth2User));
+        customUserDetails.setEmail(getAttributeValue("email", oAuth2User));
+        customUserDetails.setAvatarUrl(getAttributeValue("avatar_url", oAuth2User));
         customUserDetails.setProvider(OAuth2Provider.GITHUB);
         customUserDetails.setAttributes(oAuth2User.getAttributes());
         customUserDetails.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority(WebSecurityConfig.USER)));
@@ -34,11 +30,10 @@ public class GitHubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
 
     @Override
     public boolean accepts(OAuth2UserRequest userRequest) {
-        return OAuth2Provider.GITHUB.name().equalsIgnoreCase(userRequest.getClientRegistration().getRegistrationId());
+        return "github".equalsIgnoreCase(userRequest.getClientRegistration().getRegistrationId());
     }
-
-    private String retrieveAttr(String attr, OAuth2User oAuth2User) {
-        Object attribute = oAuth2User.getAttributes().get(attr);
-        return attribute == null ? "" : attribute.toString();
+    private String getAttributeValue(String attribute, OAuth2User oAuth2User) {
+        Object attributeValue = oAuth2User.getAttributes().get(attribute);
+        return attributeValue == null ? "" : attributeValue.toString();
     }
 }

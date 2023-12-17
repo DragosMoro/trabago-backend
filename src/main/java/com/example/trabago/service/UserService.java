@@ -12,6 +12,7 @@ public interface UserService {
 
     boolean hasUserWithEmail(String email);
 
+    User validateAndGetUserByEmail(String email);
     User saveUser(User user);
 
     void deleteUser(User user);

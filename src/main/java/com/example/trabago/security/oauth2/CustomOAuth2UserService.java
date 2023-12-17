@@ -36,6 +36,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         CustomUserDetails customUserDetails = oAuth2UserInfoExtractorOptional.get().extractUserInfo(oAuth2User);
+        if (customUserDetails.getEmail() == null) {
+            throw new InternalAuthenticationServiceException("Email not provided by OAuth2 provider");
+        }
         User user = updateOrCreateUser(customUserDetails);
         customUserDetails.setId(user.getId());
         return customUserDetails;

@@ -1,15 +1,9 @@
 package com.example.trabago.service;
 
-import com.example.trabago.model.Job;
 import com.example.trabago.model.JobColumn;
-import com.example.trabago.model.JobColumnDTO;
-import com.example.trabago.model.JobDTO;
 import com.example.trabago.repository.JobColumnRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
