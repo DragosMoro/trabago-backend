@@ -22,6 +22,9 @@ public class JobColumnDTO {
         this.color = color;
     }
 
+    public JobColumnDTO() {
+    }
+
     public String getName() {
         return name;
     }
