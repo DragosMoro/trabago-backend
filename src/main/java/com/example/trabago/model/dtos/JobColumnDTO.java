@@ -22,6 +22,9 @@ public class JobColumnDTO {
         this.color = color;
     }
 
+    public JobColumnDTO() {
+    }
+
     public String getName() {
         return name;
     }
@@ -37,4 +40,5 @@ public class JobColumnDTO {
     public void setColor(String color) {
         this.color = color;
     }
+
 }
