@@ -1,9 +1,11 @@
 package com.example.trabago.model;
 
 import com.example.trabago.security.oauth2.OAuth2Provider;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -40,6 +42,10 @@ public class User {
 
     @Column(name = "provider_id")
     private String providerId;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<JobColumn> columns;
 
     public User(String email, String password, String role, String firstName, String lastName, String imageUrl, OAuth2Provider provider, String providerId) {
         this.email = email;

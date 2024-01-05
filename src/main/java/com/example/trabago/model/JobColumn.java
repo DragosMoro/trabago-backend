@@ -18,7 +18,7 @@ public class JobColumn {
     @GenericGenerator(name = "uuid-hibernate-generator", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @Column(name = "name", unique = true)
+    @Column(name = "name")
     private String name;
 
 
@@ -38,7 +38,21 @@ public class JobColumn {
     @OneToMany(mappedBy = "jobColumn", cascade = CascadeType.REMOVE)
     private List<Job> jobs;
 
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    private User user;
+
     public JobColumn() {
+    }
+
+    public JobColumn(String name, Integer order, String color, User user) {
+        this.name = name;
+        this.order = order;
+        this.color = color;
+        this.user = user;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
     public JobColumn(String name, Integer order, String color) {
@@ -100,5 +114,13 @@ public class JobColumn {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

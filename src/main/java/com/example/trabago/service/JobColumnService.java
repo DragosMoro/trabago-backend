@@ -1,6 +1,7 @@
 package com.example.trabago.service;
 
 import com.example.trabago.model.JobColumn;
+import com.example.trabago.model.User;
 import com.example.trabago.repository.JobColumnRepository;
 import org.springframework.stereotype.Service;
 
@@ -40,5 +41,9 @@ public class JobColumnService {
 
     public JobColumn getJobColumnByName(String name) {
         return jobColumnRepository.findByName(name);
+    }
+
+    public List<JobColumn> getJobColumnsByUser(User user) {
+        return jobColumnRepository.getJobColumnsByUser(user);
     }
 }
