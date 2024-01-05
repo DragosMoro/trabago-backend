@@ -17,9 +17,13 @@ public class JobColumnDTO {
     @JsonProperty("color")
     private String color;
 
-    public JobColumnDTO(String name, String color) {
+    @JsonProperty("userId")
+    private UUID userId;
+
+    public JobColumnDTO(String name, String color, UUID userId) {
         this.name = name;
         this.color = color;
+        this.userId = userId;
     }
 
     public JobColumnDTO() {
@@ -41,4 +45,11 @@ public class JobColumnDTO {
         this.color = color;
     }
 
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
 }
