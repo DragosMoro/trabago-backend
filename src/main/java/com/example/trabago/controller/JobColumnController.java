@@ -2,14 +2,20 @@ package com.example.trabago.controller;
 
 import com.example.trabago.model.JobColumn;
 
+import com.example.trabago.model.User;
 import com.example.trabago.model.dtos.JobColumnDTO;
+import com.example.trabago.model.dtos.ModifyJobColumnDTO;
 import com.example.trabago.service.JobColumnService;
+import com.example.trabago.service.UserService;
+import com.example.trabago.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -18,6 +24,9 @@ public class JobColumnController {
     @Autowired
     private JobColumnService jobColumnService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping
     public ResponseEntity<?> createJobColumnFromModal(@RequestBody JobColumnDTO jobColumn) {
         try {
@@ -25,7 +34,11 @@ public class JobColumnController {
             if( jobColumnService.getJobColumnByName(jobColumn.getName()) != null)
                 throw new IllegalArgumentException("Column name already exists. Please choose a different name.");
 
-            JobColumn jobColumn1 = new JobColumn(jobColumn.getName(), order, jobColumn.getColor());
+            if(userService.getUserById(jobColumn.getUserId()) == null)
+                throw new IllegalArgumentException("User does not exist because maca maca.");
+
+            User user = userService.getUserById(jobColumn.getUserId());
+            JobColumn jobColumn1 = new JobColumn(jobColumn.getName(), order, jobColumn.getColor(), user);
             jobColumnService.saveColumn(jobColumn1);
             return new ResponseEntity<>(jobColumn1, HttpStatus.OK);
         } catch (IllegalArgumentException ex) {
@@ -35,12 +48,14 @@ public class JobColumnController {
         }
     }
     @PutMapping
-    public ResponseEntity<?> updateJobColumn(@RequestBody JobColumn jobColumn) {
+    public ResponseEntity<?> updateJobColumn(@RequestBody ModifyJobColumnDTO newJobColumn) {
         try {
-            JobColumn existingColumn = jobColumnService.getJobColumnByName(jobColumn.getName());
-            if(existingColumn != null && !existingColumn.getId().equals(jobColumn.getId())) {
-                throw new IllegalArgumentException("Column name already exists. Please choose a different name.");
-            }
+            if(jobColumnService.getJobColumnById(newJobColumn.getId()) == null)
+                throw new IllegalArgumentException("Column does not exist.");
+            JobColumn jobColumn = jobColumnService.getJobColumnById(newJobColumn.getId());
+            jobColumn.setName(newJobColumn.getName());
+            jobColumn.setColor(newJobColumn.getColor());
+            jobColumn.setOrder(newJobColumn.getOrder());
             jobColumnService.updateColumn(jobColumn);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException ex) {
@@ -58,6 +73,21 @@ public class JobColumnController {
             return new ResponseEntity<>("An error occurred while fetching the list of job columns: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+        @GetMapping(value = "/getAllByUser/{id}")
+    public ResponseEntity<?> getJobColumnsByUser(@PathVariable("id") UUID id)
+    {
+        try {
+            User user = userService.getUserById(id);
+            if(user == null)
+                throw new UsernameNotFoundException("User does not exist because maca maca.");
+            List<JobColumn> jobColumns = jobColumnService.getJobColumnsByUser(user);
+            return new ResponseEntity<>(jobColumns, HttpStatus.OK);
+
+        }
+        catch (Exception ex) {
+            return new ResponseEntity<>("An error occurred while fetching the list of job columns: "+ ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     //get all the jobs from a specific column
     @GetMapping(value = "/getJobs/{id}")
@@ -71,10 +101,12 @@ public class JobColumnController {
     }
 
     @PutMapping(value = "/updateOrder")
-    public ResponseEntity<?> updateOrder(@RequestBody List<JobColumn> jobColumns) {
+    public ResponseEntity<?> updateOrder(@RequestBody List<ModifyJobColumnDTO> jobColumns) {
         try {
-            for (JobColumn jobColumn : jobColumns) {
-                jobColumnService.updateColumn(jobColumn);
+            for (ModifyJobColumnDTO jobColumn : jobColumns) {
+                JobColumn column = jobColumnService.getJobColumnById(jobColumn.getId());
+                column.setOrder(jobColumn.getOrder());
+                jobColumnService.updateColumn(column);
             }
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception ex) {

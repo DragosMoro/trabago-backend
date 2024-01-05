@@ -4,6 +4,7 @@ import com.example.trabago.model.User;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UserService {
     List<User> getUsers();
@@ -16,4 +17,6 @@ public interface UserService {
     User saveUser(User user);
 
     void deleteUser(User user);
+    User getUserById(UUID id);
+
 }
