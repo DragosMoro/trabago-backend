@@ -33,3 +33,5 @@ build/
 .vscode/
 
 **/application.properties
+
+resume-analyzer/data.csv
