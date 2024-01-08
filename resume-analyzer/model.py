@@ -72,10 +72,9 @@ print(X_train.shape)
 print(X_test.shape)
 
 # Logistic Regression with OneVsRestClassifier
-clf = OneVsRestClassifier(LogisticRegression(class_weight='balanced'))  # Adaugăm opțiunea class_weight='balanced'
+clf = OneVsRestClassifier(LogisticRegression(class_weight='balanced'))
 clf.fit(X_train, y_train)
 
-# Evaluare model
 prediction = clf.predict(X_test)
 
 print("\nMetrics for Logistic Regression model:")
