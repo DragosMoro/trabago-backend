@@ -31,7 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
-
-**/application.properties
-
-resume-analyzer/data.csv
+application.properties
+config.py
+src/main/resources/application.properties
+resume-analyzer/config.py
