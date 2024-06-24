@@ -31,7 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-application.properties
-config.py
-src/main/resources/application.properties
-resume-analyzer/config.py
