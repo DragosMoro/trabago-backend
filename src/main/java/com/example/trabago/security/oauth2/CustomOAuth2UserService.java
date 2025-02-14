@@ -14,23 +14,23 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class CustomOAuth2UserService extends DefaultOAuth2UserService {
-
+public class CustomOAuth2UserService extends DefaultOAuth2UserService
+{
     private final UserService userService;
     private final List<OAuth2UserInfoExtractor> oAuth2UserInfoExtractors;
 
-    public CustomOAuth2UserService(UserService userService, List<OAuth2UserInfoExtractor> oAuth2UserInfoExtractors) {
+    public CustomOAuth2UserService(UserService userService, List<OAuth2UserInfoExtractor> oAuth2UserInfoExtractors)
+    {
         this.userService = userService;
         this.oAuth2UserInfoExtractors = oAuth2UserInfoExtractors;
     }
 
     @Override
-    public OAuth2User loadUser(OAuth2UserRequest userRequest) {
+    public OAuth2User loadUser(OAuth2UserRequest userRequest)
+    {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
-        Optional<OAuth2UserInfoExtractor> oAuth2UserInfoExtractorOptional = oAuth2UserInfoExtractors.stream()
-                .filter(oAuth2UserInfoExtractor -> oAuth2UserInfoExtractor.accepts(userRequest))
-                .findFirst();
+        Optional<OAuth2UserInfoExtractor> oAuth2UserInfoExtractorOptional = oAuth2UserInfoExtractors.stream().filter(oAuth2UserInfoExtractor -> oAuth2UserInfoExtractor.accepts(userRequest)).findFirst();
         if (oAuth2UserInfoExtractorOptional.isEmpty()) {
             throw new InternalAuthenticationServiceException("The OAuth2 provider is not supported yet");
         }
@@ -44,7 +44,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return customUserDetails;
     }
 
-    private User updateOrCreateUser(CustomUserDetails user) {
+    private User updateOrCreateUser(CustomUserDetails user)
+    {
         Optional<User> userOptional = userService.getUserByEmail(user.getEmail());
         User existingUser;
         if (userOptional.isEmpty()) {

@@ -13,18 +13,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-
 @RestController
 @RequestMapping("api/jobs")
-public class JobController {
-    // create the CRUD methods
+public class JobController
+{
     @Autowired
     private JobService jobService;
-    // create a method to get all jobs
     @Autowired
     private JobColumnService jobColumnService;
+
     @GetMapping(value = "/getAll")
-    public ResponseEntity<?> getAllJobs() {
+    public ResponseEntity<?> getAllJobs()
+    {
         try {
             return new ResponseEntity<>(jobService.getAllJobs(), HttpStatus.OK);
         } catch (Exception ex) {
@@ -32,9 +32,9 @@ public class JobController {
         }
     }
 
-    // create a method to get all jobs by column id
     @GetMapping(value = "/getAll/{id}")
-    public ResponseEntity<?> getJobsFromColumn(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> getJobsFromColumn(@PathVariable("id") UUID id)
+    {
         try {
             return new ResponseEntity<>(jobService.getJobsByColumnId(id), HttpStatus.OK);
         } catch (Exception ex) {
@@ -42,9 +42,9 @@ public class JobController {
         }
     }
 
-
     @PostMapping
-    public ResponseEntity<Job> createJobFromModal(@RequestBody JobDTO jobDTO) {
+    public ResponseEntity<Job> createJobFromModal(@RequestBody JobDTO jobDTO)
+    {
         try {
             JobColumn jobColumn = jobColumnService.getJobColumnByName(jobDTO.getColumn());
             int order = jobService.getJobsByColumnId(jobColumn.getId()).size() + 1;
@@ -60,7 +60,8 @@ public class JobController {
     }
 
     @PutMapping(value = "/updateOrder")
-    public ResponseEntity<?> updateOrder(@RequestBody List<Job> jobs) {
+    public ResponseEntity<?> updateOrder(@RequestBody List<Job> jobs)
+    {
         try {
             for (int i = 0; i < jobs.size(); i++) {
                 jobs.get(i).setOrder(i + 1);
@@ -73,7 +74,8 @@ public class JobController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateJob(@RequestBody Job job) {
+    public ResponseEntity<?> updateJob(@RequestBody Job job)
+    {
         try {
             jobService.updateJob(job);
             return new ResponseEntity<>(job, HttpStatus.OK);
@@ -83,7 +85,8 @@ public class JobController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<?> deleteJob(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> deleteJob(@PathVariable("id") UUID id)
+    {
         try {
             jobService.deleteJob(id);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -93,14 +96,12 @@ public class JobController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getJobById(@PathVariable("id") UUID id) {
+    public ResponseEntity<?> getJobById(@PathVariable("id") UUID id)
+    {
         try {
             return new ResponseEntity<>(jobService.getJobById(id), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>("An error occurred while fetching the job: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
 }

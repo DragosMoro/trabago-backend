@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.UUID;
 
 @Data
-public class CustomUserDetails implements OAuth2User, UserDetails {
+public class CustomUserDetails implements OAuth2User, UserDetails
+{
     private UUID id;
     private String email;
     private String password;
@@ -23,39 +24,44 @@ public class CustomUserDetails implements OAuth2User, UserDetails {
     private Map<String, Object> attributes;
 
     @Override
-    public String getUsername() {
+    public String getUsername()
+    {
         return email;
     }
 
-
     @Override
-    public boolean isAccountNonExpired() {
+    public boolean isAccountNonExpired()
+    {
         return true;
     }
 
     @Override
-    public boolean isAccountNonLocked() {
+    public boolean isAccountNonLocked()
+    {
         return true;
     }
 
     @Override
-    public boolean isCredentialsNonExpired() {
+    public boolean isCredentialsNonExpired()
+    {
         return true;
     }
 
     @Override
-    public boolean isEnabled() {
+    public boolean isEnabled()
+    {
         return true;
     }
 
-
     @Override
-    public String getName() {
+    public String getName()
+    {
         return firstName + " " + lastName;
     }
 
     @Override
-    public <A> A getAttribute(String name) {
+    public <A> A getAttribute(String name)
+    {
         return OAuth2User.super.getAttribute(name);
     }
 }

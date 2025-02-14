@@ -18,50 +18,36 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
-public class TokenProvider {
+public class TokenProvider
+{
 
     public static final String TOKEN_TYPE = "JWT";
     public static final String TOKEN_ISSUER = "trabago-backend";
     public static final String TOKEN_AUDIENCE = "trabago-frontend";
+
     @Value("${app.jwt.secret}")
     private String jwtSecret;
+
     @Value("${app.jwt.expiration.minutes}")
     private Long jwtExpirationMinutes;
 
-    public String generate(Authentication authentication) {
+    public String generate(Authentication authentication)
+    {
         CustomUserDetails user = (CustomUserDetails) authentication.getPrincipal();
 
-        List<String> roles = user.getAuthorities()
-                .stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+        List<String> roles = user.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
 
         byte[] signingKey = jwtSecret.getBytes();
 
-        return Jwts.builder()
-                .setHeaderParam("token_type", TOKEN_TYPE)
-                .signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512)
-                .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant()))
-                .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
-                .setId(UUID.randomUUID().toString())
-                .setIssuer(TOKEN_ISSUER)
-                .setAudience(TOKEN_AUDIENCE)
-                .setSubject(user.getUsername())
-                .claim("user_role", roles)
-                .claim("name", user.getName())
-                .claim("email", user.getEmail())
-                .claim("id", user.getId())
-                .compact();
+        return Jwts.builder().setHeaderParam("token_type", TOKEN_TYPE).signWith(Keys.hmacShaKeyFor(signingKey), SignatureAlgorithm.HS512).setExpiration(Date.from(ZonedDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant())).setIssuedAt(Date.from(ZonedDateTime.now().toInstant())).setId(UUID.randomUUID().toString()).setIssuer(TOKEN_ISSUER).setAudience(TOKEN_AUDIENCE).setSubject(user.getUsername()).claim("user_role", roles).claim("name", user.getName()).claim("email", user.getEmail()).claim("id", user.getId()).compact();
     }
 
-    public Optional<Jws<Claims>> validateTokenAndGetJws(String token) {
+    public Optional<Jws<Claims>> validateTokenAndGetJws(String token)
+    {
         try {
             byte[] signingKey = jwtSecret.getBytes();
 
-            Jws<Claims> jws = Jwts.parserBuilder()
-                    .setSigningKey(signingKey)
-                    .build()
-                    .parseClaimsJws(token);
+            Jws<Claims> jws = Jwts.parserBuilder().setSigningKey(signingKey).build().parseClaimsJws(token);
 
             return Optional.of(jws);
         } catch (ExpiredJwtException exception) {

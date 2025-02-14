@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
-public class GoogleOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
-
+public class GoogleOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor
+{
     @Override
-    public CustomUserDetails extractUserInfo(OAuth2User oAuth2User) {
+    public CustomUserDetails extractUserInfo(OAuth2User oAuth2User)
+    {
         CustomUserDetails customUserDetails = new CustomUserDetails();
         customUserDetails.setEmail(getAttributeValue("email", oAuth2User));
         customUserDetails.setFirstName(getAttributeValue("given_name", oAuth2User));
@@ -26,10 +27,13 @@ public class GoogleOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
     }
 
     @Override
-    public boolean accepts(OAuth2UserRequest userRequest) {
+    public boolean accepts(OAuth2UserRequest userRequest)
+    {
         return OAuth2Provider.GOOGLE.name().equalsIgnoreCase(userRequest.getClientRegistration().getRegistrationId());
     }
-    private String getAttributeValue(String attribute, OAuth2User oAuth2User) {
+
+    private String getAttributeValue(String attribute, OAuth2User oAuth2User)
+    {
         Object attributeValue = oAuth2User.getAttributes().get(attribute);
         return attributeValue == null ? "" : attributeValue.toString();
     }

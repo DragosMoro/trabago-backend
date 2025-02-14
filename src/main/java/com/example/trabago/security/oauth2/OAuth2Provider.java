@@ -1,6 +1,7 @@
 package com.example.trabago.security.oauth2;
 
-public enum OAuth2Provider {
+public enum OAuth2Provider
+{
 
-LOCAL, GITHUB, GOOGLE, LINKEDIN
+    LOCAL, GITHUB, GOOGLE
 }

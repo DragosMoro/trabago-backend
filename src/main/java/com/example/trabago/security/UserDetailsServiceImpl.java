@@ -14,20 +14,20 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
-
+public class UserDetailsServiceImpl implements UserDetailsService
+{
     private final UserService userService;
 
-
     @Override
-    public UserDetails loadUserByUsername(String email) {
-        User user = userService.getUserByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
+    public UserDetails loadUserByUsername(String email)
+    {
+        User user = userService.getUserByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("Email %s not found", email)));
         List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
         return mapUserToCustomUserDetails(user, authorities);
     }
 
-    private CustomUserDetails mapUserToCustomUserDetails(User user, List<SimpleGrantedAuthority> authorities) {
+    private CustomUserDetails mapUserToCustomUserDetails(User user, List<SimpleGrantedAuthority> authorities)
+    {
         CustomUserDetails customUserDetails = new CustomUserDetails();
         customUserDetails.setId(user.getId());
         customUserDetails.setEmail(user.getEmail());

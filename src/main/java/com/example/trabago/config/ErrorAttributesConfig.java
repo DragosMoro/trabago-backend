@@ -11,13 +11,16 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.Map;
 
 @Configuration
-public class ErrorAttributesConfig {
-
+public class ErrorAttributesConfig
+{
     @Bean
-    public ErrorAttributes errorAttributes() {
-        return new DefaultErrorAttributes() {
+    public ErrorAttributes errorAttributes()
+    {
+        return new DefaultErrorAttributes()
+        {
             @Override
-            public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
+            public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options)
+            {
                 return super.getErrorAttributes(webRequest, options.including(Include.EXCEPTION, Include.MESSAGE, Include.BINDING_ERRORS));
             }
         };

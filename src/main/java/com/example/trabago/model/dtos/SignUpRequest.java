@@ -5,9 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class SignUpRequest {
-
-
+public class SignUpRequest
+{
     @NotBlank
     private String password;
 

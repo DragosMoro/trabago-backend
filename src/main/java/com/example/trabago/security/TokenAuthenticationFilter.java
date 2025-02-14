@@ -21,7 +21,8 @@ import java.util.Optional;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class TokenAuthenticationFilter extends OncePerRequestFilter {
+public class TokenAuthenticationFilter extends OncePerRequestFilter
+{
     public static final String TOKEN_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";
 
@@ -29,24 +30,24 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
+    {
         try {
-            getJwtFromRequest(request)
-                    .flatMap(tokenProvider::validateTokenAndGetJws)
-                    .ifPresent(jws -> {
-                        String email = jws.getBody().getSubject();
-                        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-                        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
-                    });
+            getJwtFromRequest(request).flatMap(tokenProvider::validateTokenAndGetJws).ifPresent(jws -> {
+                String email = jws.getBody().getSubject();
+                UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            });
         } catch (Exception e) {
             System.out.println("Could not set user authentication in security context");
         }
         filterChain.doFilter(request, response);
     }
 
-    private Optional<String> getJwtFromRequest(HttpServletRequest request) {
+    private Optional<String> getJwtFromRequest(HttpServletRequest request)
+    {
         String tokenHeader = request.getHeader(TOKEN_HEADER);
         if (StringUtils.hasText(tokenHeader) && tokenHeader.startsWith(TOKEN_PREFIX)) {
             return Optional.of(tokenHeader.replace(TOKEN_PREFIX, ""));

@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 
 @Service
-public class GitHubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
-
+public class GitHubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor
+{
     @Override
-    public CustomUserDetails extractUserInfo(OAuth2User oAuth2User) {
+    public CustomUserDetails extractUserInfo(OAuth2User oAuth2User)
+    {
         CustomUserDetails customUserDetails = new CustomUserDetails();
         oAuth2User.getAttributes().forEach((k, v) -> System.out.println(k + " " + v));
         oAuth2User.getName();
@@ -29,10 +30,13 @@ public class GitHubOAuth2UserInfoExtractor implements OAuth2UserInfoExtractor {
     }
 
     @Override
-    public boolean accepts(OAuth2UserRequest userRequest) {
+    public boolean accepts(OAuth2UserRequest userRequest)
+    {
         return "github".equalsIgnoreCase(userRequest.getClientRegistration().getRegistrationId());
     }
-    private String getAttributeValue(String attribute, OAuth2User oAuth2User) {
+
+    private String getAttributeValue(String attribute, OAuth2User oAuth2User)
+    {
         Object attributeValue = oAuth2User.getAttributes().get(attribute);
         return attributeValue == null ? "" : attributeValue.toString();
     }

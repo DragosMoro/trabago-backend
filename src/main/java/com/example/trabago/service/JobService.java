@@ -8,39 +8,43 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class JobService {
+public class JobService
+{
 
     private final JobRepository jobRepository;
 
-    public JobService(JobRepository jobRepository) {
+    public JobService(JobRepository jobRepository)
+    {
         this.jobRepository = jobRepository;
     }
 
-    public void saveJob(Job job) {
-
+    public void saveJob(Job job)
+    {
         jobRepository.save(job);
     }
 
-    public void deleteJob(UUID id) {
+    public void deleteJob(UUID id)
+    {
         jobRepository.deleteById(id);
     }
 
-    public Job getJobById(UUID id) {
+    public Job getJobById(UUID id)
+    {
         return jobRepository.findById(id).orElseThrow();
     }
 
-    public void updateJob(Job job) {
+    public void updateJob(Job job)
+    {
         jobRepository.save(job);
     }
 
-    public List<Job> getAllJobs() {
+    public List<Job> getAllJobs()
+    {
         return jobRepository.findAll();
     }
 
-
-    public List<Job> getJobsByColumnId(UUID id) {
+    public List<Job> getJobsByColumnId(UUID id)
+    {
         return jobRepository.findByJobColumnId(id);
     }
-
-
 }

@@ -10,9 +10,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration
-public class CorsConfig {
+public class CorsConfig
+{
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.allowedOrigins}") List<String> allowedOrigins) {
+    public CorsConfigurationSource corsConfigurationSource(@Value("${app.cors.allowedOrigins}") List<String> allowedOrigins)
+    {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
         configuration.setAllowedOrigins(allowedOrigins);

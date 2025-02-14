@@ -19,34 +19,38 @@ import static com.example.trabago.config.SwaggerConfig.BEARER_KEY_SECURITY_SCHEM
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/users")
-public class UserController {
+public class UserController
+{
 
     private final UserService userService;
     private final UserMapper userMapper;
+
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/me")
-    public UserDTO getCurrentUser(@AuthenticationPrincipal CustomUserDetails currentUser) {
+    public UserDTO getCurrentUser(@AuthenticationPrincipal CustomUserDetails currentUser)
+    {
         User user = userService.validateAndGetUserByEmail(currentUser.getUsername());
         return userMapper.toUserDto(user);
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping
-    public List<UserDTO> getUsers() {
-        return userService.getUsers().stream()
-                .map(userMapper::toUserDto)
-                .collect(Collectors.toList());
+    public List<UserDTO> getUsers()
+    {
+        return userService.getUsers().stream().map(userMapper::toUserDto).collect(Collectors.toList());
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @GetMapping("/{email}")
-    public UserDTO getUser(@PathVariable String email) {
+    public UserDTO getUser(@PathVariable String email)
+    {
         return userMapper.toUserDto(userService.validateAndGetUserByEmail(email));
     }
 
     @Operation(security = {@SecurityRequirement(name = BEARER_KEY_SECURITY_SCHEME)})
     @DeleteMapping("/{email}")
-    public UserDTO deleteUser(@PathVariable String email) {
+    public UserDTO deleteUser(@PathVariable String email)
+    {
         User user = userService.validateAndGetUserByEmail(email);
         userService.deleteUser(user);
         return userMapper.toUserDto(user);

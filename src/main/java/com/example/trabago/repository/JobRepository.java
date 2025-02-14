@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface JobRepository  extends JpaRepository<Job, UUID> {
+public interface JobRepository extends JpaRepository<Job, UUID>
+{
     void deleteById(UUID id);
 
     List<Job> findByJobColumnId(UUID id);
-
-
 }
